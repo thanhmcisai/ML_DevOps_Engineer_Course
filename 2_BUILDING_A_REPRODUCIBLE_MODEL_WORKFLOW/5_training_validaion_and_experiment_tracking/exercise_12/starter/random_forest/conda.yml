@@ -1,0 +1,13 @@
+name: download_data
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - pandas
+  - scikit-learn
+  - matplotlib
+  - plotly
+  - pillow
+  - mlflow=2.0.1
+  - omegaconf
+  - wandb
