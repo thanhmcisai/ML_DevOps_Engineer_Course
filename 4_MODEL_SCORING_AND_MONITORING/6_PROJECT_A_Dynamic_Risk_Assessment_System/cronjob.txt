@@ -1,1 +1,8 @@
-*/10 * * * * fullprocess.py
+# This is the crontab file running locally to redeploy the full process every 10 minutes.
+# You can start this running in your local environment by editing your cronjobs with `crontab -e`
+# The API should be running at 127.0.0.1 or whereever you have specifed in the config file.
+
+SHELL=/bin/bash
+BASH_ENV=~/.bashrc_conda
+
+*/10 * * * * conda activate proj4 > ~/myjob.log 2>&1; python3 /home/derricklewis/Documents/Data\ Science/ML_DevOps_ML_Model_Scoring_and_Monitoring/fullprocess.py > ~/myjob2.log 2>&1; conda deactivate;

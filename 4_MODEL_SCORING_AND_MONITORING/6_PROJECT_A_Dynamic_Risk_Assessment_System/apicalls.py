@@ -1,36 +1,47 @@
-import requests
-import glob
-import json
+"""
+Script to call the API endpoints of the model and store the responses
+"""
 import os
-#Specify a URL that resolves to your workspace
-URL = "http://127.0.0.1/"
-
-with open('config.json','r') as f:
-    config = json.load(f)
-
-paths = os.path.join(config['test_data_path'])     
-
-#Call each API endpoint and store the responses
-response1 = requests.get('http://127.0.0.1:8000/prediction').content
-response2 = requests.get('http://127.0.0.1:8000/scoring').content
-response3 = requests.get('http://127.0.0.1:8000/summarystats').content
-response4 = requests.get('http://127.0.0.1:8000/diagnostics').content
+import json
+import requests
 
 
-#combine all API responses
-responses = (response1, response2, response3, response4)
+def get_data(output_folder_path: str, url: str) -> None:
+    """
+    Call each API endpoint and store the responses
 
-#write the responses to your workspace
+    Parameters
+    ---
+    output_folder_path: str
+        Path to the folder where the responses will be stored
 
-def store_response(paths):
-    with open(f'{paths}/apireturns.txt', 'w') as f:
-        for response in str(responses):
-            f.write(response)
-    print("responses saved to disk")
-        
+    Returns
+    ---
+    None
+    """
+    response1 = requests.get(
+        url + "prediction",
+        params={'filepath': 'testdata/testdata.csv'},
+        timeout=10).json()
+    response2 = requests.get(url + "scoring", timeout=10).content.decode()
+    response3 = requests.get(url + "summarystats", timeout=10).json()
+    response4 = requests.get(url + "diagnostics", timeout=10).json()
+
+    apicalls = {'prediction': response1, 'F1_score': response2,
+                'data_summary': response3, 'diagnostics': response4}
+    responses = apicalls
+
+    with open(output_folder_path + '/apireturns.json', 'w', encoding='utf8'
+              ) as resp:
+        json.dump(responses, resp, indent=4)
+    return None
+
+
 if __name__ == '__main__':
-    store_response(paths)        
+    with open('config.json', 'r', encoding='utf8') as f:
+        config = json.load(f)
 
+    OUTPUT_PATH = os.path.join(config['output_folder_path'])
+    URL = config['url']
 
-
-
+    get_data(OUTPUT_PATH, URL)

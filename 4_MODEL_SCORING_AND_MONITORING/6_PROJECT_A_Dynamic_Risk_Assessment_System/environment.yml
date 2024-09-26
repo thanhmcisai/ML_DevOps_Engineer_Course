@@ -1,0 +1,32 @@
+name:
+  proj4
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - dash
+  - dash-bootstrap-components
+  - click
+  - cycler
+  - Flask
+  - gunicorn
+  - itsdangerous
+  - Jinja2
+  - joblib
+  - kiwisolver
+  - MarkupSafe
+  - plotly
+  - numpy
+  - pandas
+  - Pillow
+  - pyparsing
+  - python-dateutil
+  - pytz
+  - scikit-learn
+  - scipy
+  - six
+  - threadpoolctl
+  - Werkzeug
+  # - ipykernel
+  # - nbformat
